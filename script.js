@@ -1,6 +1,8 @@
 // script.js
 let playerScore = 0;
 let computerScore = 0;
+let roundNumber = 0;
+const totalRounds = 5;
 
 function playRound(playerSelection, computerSelection) {
   if (computerSelection === playerSelection) {
@@ -32,27 +34,35 @@ function getComputerChoice() {
 }
 
 function handleClick(playerChoice) {
-  const playerSelection = playerChoice.toLowerCase();
-  const computerSelection = getComputerChoice();
-  const roundResult = playRound(playerSelection, computerSelection);
+  if (roundNumber < totalRounds) {
+    const playerSelection = playerChoice.toLowerCase();
+    const computerSelection = getComputerChoice();
+    const roundResult = playRound(playerSelection, computerSelection);
 
-  if (roundResult.includes("Win")) {
-    playerScore++;
-  } else if (roundResult.includes("Lose")) {
-    computerScore++;
+    if (roundResult.includes("Win")) {
+      playerScore++;
+    } else if (roundResult.includes("Lose")) {
+      computerScore++;
+    }
+
+    roundNumber++;
+    console.log(`Round ${roundNumber}: ${roundResult}`);
+    console.log("You: ", playerScore, "    ", "Computer: ", computerScore);
+
+    if (roundNumber === totalRounds) {
+      showFinalResult();
+    }
   }
-
-  console.log(roundResult);
-  console.log("You: ", playerScore, "    ", "Computer: ", computerScore);
-
-  checkGameResult();
 }
 
-function checkGameResult() {
+function showFinalResult() {
+  console.log("Final Result:");
+  console.log("You: ", playerScore, "    ", "Computer: ", computerScore);
+
   if (playerScore > computerScore) {
-    console.log("You win the game!");
+    console.log("You beat the computer!");
   } else if (playerScore < computerScore) {
-    console.log("You lose the game!");
+    console.log("Computer Won!");
   } else {
     console.log("It's a tie");
   }
@@ -67,4 +77,3 @@ document.addEventListener("DOMContentLoaded", () => {
   paperBtn.addEventListener("click", () => handleClick("PAPER"));
   scissorsBtn.addEventListener("click", () => handleClick("SCISSORS"));
 });
-
